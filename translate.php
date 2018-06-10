@@ -7,16 +7,22 @@
 // *** Update or verify the following values. ***
 // **********************************************
 $text = "";
+$params = "";
+$qrystr;
 
-if(is_array($_POST)&&count($_POST)>0)//先判斷是否有值   
-	{
-		$text = $_POST['txt'];
-	
-	}
-elseif(is_array($_GET)&&count($_GET)>0)
-	{
-		$text = $_GET['txt'];
-    } 
+if (!empty($_GET)) { 
+	$qrystr = $_GET; 
+} elseif (!empty($_POST)) {
+	$qrystr = $_POST;
+}
+
+foreach($qrystr as $key => $value){
+    if ($key == "txt") {
+		$text = $value;
+	} elseif ($key == "to") {
+		$params = "&to=".str_replace(",","&to=",$value);
+	} 
+}
 
 if($text=="")
 	{
@@ -24,18 +30,18 @@ if($text=="")
 		exit;		
 	}
 	
-	
+if ($params == "") {
+	$params = "&to=en&to=zh-Hant";
+}
 
 // Replace the subscriptionKey string value with your valid subscription key.
-$key = 'bb96f19a69b14e2aadae2cebbd91e76f';
+$key = 'your key';
 
 $host = "https://api.cognitive.microsofttranslator.com";
 $path = "/translate?api-version=3.0";
 
-// Translate to German and Italian.
-$params = "&to=en&to=zh-Hant";
 
-//$text = $_POST['txt'];
+
 
 if (!function_exists('com_create_guid')) {
   function com_create_guid() {
